@@ -40,10 +40,11 @@ async function login(baseUrl, username, email, password) {
   updateLocalStore(res.access_token, res.device_id, res.user_id, myBaseUrl);
 }
 
-async function loginWithToken(baseUrl, token) {
+async function loginWithToken(baseUrl, token, isJwt = false) {
   const client = createTemporaryClient(baseUrl);
+  const tkType = isJwt ? 'org.matrix.login.jwt' : 'm.login.token';
 
-  const res = await client.login('m.login.token', {
+  const res = await client.login(tkType, {
     token,
     initial_device_display_name: cons.DEVICE_DISPLAY_NAME,
   });
@@ -57,7 +58,10 @@ async function verifyEmail(baseUrl, email, client_secret, send_attempt, next_lin
   const res = await fetch(`${baseUrl}/_matrix/client/r0/register/email/requestToken`, {
     method: 'POST',
     body: JSON.stringify({
-      email, client_secret, send_attempt, next_link,
+      email,
+      client_secret,
+      send_attempt,
+      next_link,
     }),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -68,9 +72,7 @@ async function verifyEmail(baseUrl, email, client_secret, send_attempt, next_lin
   return data;
 }
 
-async function completeRegisterStage(
-  baseUrl, username, password, auth,
-) {
+async function completeRegisterStage(baseUrl, username, password, auth) {
   const tempClient = createTemporaryClient(baseUrl);
 
   try {
@@ -98,7 +100,10 @@ async function completeRegisterStage(
 }
 
 export {
-  createTemporaryClient, login, verifyEmail,
-  loginWithToken, startSsoLogin,
+  createTemporaryClient,
+  login,
+  verifyEmail,
+  loginWithToken,
+  startSsoLogin,
   completeRegisterStage,
 };
