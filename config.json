@@ -1,13 +1,5 @@
 {
-  "defaultHomeserver": 3,
-  "homeserverList": [
-    "0wnz.at",
-    "converser.eu",
-    "envs.net",
-    "matrix.org",
-    "monero.social",
-    "mozilla.org",
-    "xmr.se"
-  ],
-  "allowCustomHomeservers": true
+  "defaultHomeserver": 0,
+  "homeserverList": ["matrix.explorerbyx.org"],
+  "allowCustomHomeservers": false
 }
