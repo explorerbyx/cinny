@@ -42,6 +42,7 @@ async function login(baseUrl, username, email, password) {
 
 async function loginWithToken(baseUrl, token, isJwt = false) {
   const client = createTemporaryClient(baseUrl);
+  // Set login type
   const tkType = isJwt ? 'org.matrix.login.jwt' : 'm.login.token';
 
   const res = await client.login(tkType, {
