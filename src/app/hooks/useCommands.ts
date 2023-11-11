@@ -90,8 +90,11 @@ export const useCommands = (mx: MatrixClient, room: Room): CommandRecord => {
               return;
             }
           }
-          const devices = await Promise.all(userIds.map(hasDevices));
-          const isEncrypt = devices.every((hasDevice) => hasDevice);
+          // BHE 11/2023 NO ENCRYIPTION **************
+          // const devices = await Promise.all(userIds.map(hasDevices));
+          // const isEncrypt = devices.every((hasDevice) => hasDevice);
+          const isEncrypt = false;
+
           const result = await roomActions.createDM(userIds, isEncrypt);
           selectRoom(result.room_id);
         },

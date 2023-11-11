@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DrawerHeader.scss';
 
@@ -7,8 +7,13 @@ import { twemojify } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import {
-  openPublicRooms, openCreateRoom, openSpaceManage, openJoinAlias,
-  openSpaceAddExisting, openInviteUser, openReusableContextMenu,
+  openPublicRooms,
+  openCreateRoom,
+  openSpaceManage,
+  openJoinAlias,
+  openSpaceAddExisting,
+  openInviteUser,
+  openReusableContextMenu,
 } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
 
@@ -31,55 +36,92 @@ import ChevronBottomIC from '../../../../public/res/ic/outlined/chevron-bottom.s
 export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(spaceId);
+  const [isAdmin, setAdmin] = useState(undefined); // State to store the data
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const mx2 = initMatrix.matrixClient;
+        const isAnAdmin = await mx2.isSynapseAdministrator();
+        setAdmin(isAnAdmin ? 'admin' : 'user');
+      } catch (error) {
+        setAdmin('user');
+      }
+    }
+    fetchData();
+  }, []); // Empty dependency array means this runs once after the initial render
+
+  if (!isAdmin) {
+    return <div> </div>; // Render while data is loading
+  }
+
   const canManage = room
     ? room.currentState.maySendStateEvent('m.space.child', mx.getUserId())
-    : true;
+    : isAdmin === 'admin';
 
   return (
     <>
       <MenuHeader>Add rooms or spaces</MenuHeader>
       <MenuItem
         iconSrc={SpacePlusIC}
-        onClick={() => { afterOptionSelect(); openCreateRoom(true, spaceId); }}
+        onClick={() => {
+          afterOptionSelect();
+          openCreateRoom(true, spaceId);
+        }}
         disabled={!canManage}
       >
         Create new space
       </MenuItem>
       <MenuItem
         iconSrc={HashPlusIC}
-        onClick={() => { afterOptionSelect(); openCreateRoom(false, spaceId); }}
+        onClick={() => {
+          afterOptionSelect();
+          openCreateRoom(false, spaceId);
+        }}
         disabled={!canManage}
       >
         Create new room
       </MenuItem>
-      { !spaceId && (
+      {!spaceId && (
         <MenuItem
           iconSrc={HashGlobeIC}
-          onClick={() => { afterOptionSelect(); openPublicRooms(); }}
+          onClick={() => {
+            afterOptionSelect();
+            openPublicRooms();
+          }}
         >
           Explore public rooms
         </MenuItem>
       )}
-      { !spaceId && (
+      {!spaceId && (
         <MenuItem
           iconSrc={PlusIC}
-          onClick={() => { afterOptionSelect(); openJoinAlias(); }}
+          onClick={() => {
+            afterOptionSelect();
+            openJoinAlias();
+          }}
         >
           Join with address
         </MenuItem>
       )}
-      { spaceId && (
+      {spaceId && (
         <MenuItem
           iconSrc={PlusIC}
-          onClick={() => { afterOptionSelect(); openSpaceAddExisting(spaceId); }}
+          onClick={() => {
+            afterOptionSelect();
+            openSpaceAddExisting(spaceId);
+          }}
           disabled={!canManage}
         >
           Add existing
         </MenuItem>
       )}
-      { spaceId && (
+      {spaceId && (
         <MenuItem
-          onClick={() => { afterOptionSelect(); openSpaceManage(spaceId); }}
+          onClick={() => {
+            afterOptionSelect();
+            openSpaceManage(spaceId);
+          }}
           iconSrc={HashSearchIC}
         >
           Manage rooms
@@ -102,24 +144,20 @@ function DrawerHeader({ selectedTab, spaceId }) {
 
   const isDMTab = selectedTab === cons.tabs.DIRECTS;
   const room = mx.getRoom(spaceId);
-  const spaceName = isDMTab ? null : (room?.name || null);
+  const spaceName = isDMTab ? null : room?.name || null;
 
   const openSpaceOptions = (e) => {
     e.preventDefault();
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(e, '.header'),
-      (closeMenu) => <SpaceOptions roomId={spaceId} afterOptionSelect={closeMenu} />,
-    );
+    openReusableContextMenu('bottom', getEventCords(e, '.header'), (closeMenu) => (
+      <SpaceOptions roomId={spaceId} afterOptionSelect={closeMenu} />
+    ));
   };
 
   const openHomeSpaceOptions = (e) => {
     e.preventDefault();
-    openReusableContextMenu(
-      'right',
-      getEventCords(e, '.ic-btn'),
-      (closeMenu) => <HomeSpaceOptions spaceId={spaceId} afterOptionSelect={closeMenu} />,
-    );
+    openReusableContextMenu('right', getEventCords(e, '.ic-btn'), (closeMenu) => (
+      <HomeSpaceOptions spaceId={spaceId} afterOptionSelect={closeMenu} />
+    ));
   };
 
   return (
@@ -132,18 +170,31 @@ function DrawerHeader({ selectedTab, spaceId }) {
           onMouseUp={(e) => blurOnBubbling(e, '.drawer-header__btn')}
         >
           <TitleWrapper>
-            <Text variant="s1" weight="medium" primary>{twemojify(spaceName)}</Text>
+            <Text variant="s1" weight="medium" primary>
+              {twemojify(spaceName)}
+            </Text>
           </TitleWrapper>
           <RawIcon size="small" src={ChevronBottomIC} />
         </button>
       ) : (
         <TitleWrapper>
-          <Text variant="s1" weight="medium" primary>{tabName}</Text>
+          <Text variant="s1" weight="medium" primary>
+            {tabName}
+          </Text>
         </TitleWrapper>
       )}
 
-      { isDMTab && <IconButton onClick={() => openInviteUser()} tooltip="Start DM" src={PlusIC} size="small" /> }
-      { !isDMTab && <IconButton onClick={openHomeSpaceOptions} tooltip="Add rooms/spaces" src={PlusIC} size="small" /> }
+      {isDMTab && (
+        <IconButton onClick={() => openInviteUser()} tooltip="Start DM" src={PlusIC} size="small" />
+      )}
+      {!isDMTab && (
+        <IconButton
+          onClick={openHomeSpaceOptions}
+          tooltip="Add rooms/spaces"
+          src={PlusIC}
+          size="small"
+        />
+      )}
     </Header>
   );
 }

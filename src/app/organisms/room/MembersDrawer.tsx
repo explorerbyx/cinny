@@ -175,9 +175,11 @@ type MembersDrawerProps = {
 };
 export function MembersDrawer({ room }: MembersDrawerProps) {
   const mx = useMatrixClient();
+  const minViewListPowerLevel = room.getMember(mx?.getUserId() || '')?.powerLevel || 50;
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const scrollTopAnchorRef = useRef<HTMLDivElement>(null);
+
   const members = useRoomMembers(mx, room.roomId);
   const getPowerLevelTag = usePowerLevelTags();
   const fetchingMembers = members.length < room.getJoinedMemberCount();
@@ -200,9 +202,10 @@ export function MembersDrawer({ room }: MembersDrawerProps) {
     () =>
       members
         .filter(membershipFilter.filterFn)
+        .filter((member) => member.powerLevel <= minViewListPowerLevel) // Excluye a miembros con nivel de poder 99 o superior
         .sort(sortFilter.filterFn)
         .sort((a, b) => b.powerLevel - a.powerLevel),
-    [members, membershipFilter, sortFilter]
+    [members, minViewListPowerLevel, membershipFilter, sortFilter]
   );
 
   const [result, search, resetSearch] = useAsyncSearch(

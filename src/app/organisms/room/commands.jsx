@@ -44,10 +44,8 @@ const commands = {
   shrug: {
     name: 'shrug',
     description: 'Send ¯\\_(ツ)_/¯ as message',
-    exe: (roomId, data, onSuccess) => onSuccess(
-      `¯\\_(ツ)_/¯${data.trim() !== '' ? ` ${data}` : ''}`,
-      { msgType: 'm.text' },
-    ),
+    exe: (roomId, data, onSuccess) =>
+      onSuccess(`¯\\_(ツ)_/¯${data.trim() !== '' ? ` ${data}` : ''}`, { msgType: 'm.text' }),
   },
   plain: {
     name: 'plain',
@@ -79,8 +77,11 @@ const commands = {
           return;
         }
       }
-      const devices = await Promise.all(userIds.map(hasDevices));
-      const isEncrypt = devices.every((hasDevice) => hasDevice);
+      // BHE 11/2023 NO ENCRYIPTION **************
+      // const devices = await Promise.all(userIds.map(hasDevices));
+      // const isEncrypt = devices.every((hasDevice) => hasDevice);
+      const isEncrypt = false;
+
       const result = await roomActions.createDM(userIds, isEncrypt);
       selectRoom(result.room_id);
     },
@@ -202,7 +203,9 @@ const commands = {
 
 function openHelpDialog() {
   openReusableDialog(
-    <Text variant="s1" weight="medium">Commands</Text>,
+    <Text variant="s1" weight="medium">
+      Commands
+    </Text>,
     () => (
       <div className="commands-dialog">
         {Object.keys(commands).map((cmdName) => (
@@ -213,7 +216,7 @@ function openHelpDialog() {
           />
         ))}
       </div>
-    ),
+    )
   );
 }
 
