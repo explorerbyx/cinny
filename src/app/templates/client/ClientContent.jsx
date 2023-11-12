@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
+
 import navigation from '../../../client/state/navigation';
 import { openNavigation } from '../../../client/action/navigation';
 
 import Welcome from '../../organisms/welcome/Welcome';
+import { getUrlPrams } from '../../../util/common';
 import { RoomBaseView } from '../../organisms/room/Room';
 
 export function ClientContent() {
+  const [welcomeMsg, setWelcomeMsg] = useState(getUrlPrams('welcomeMsg'));
   const [roomInfo, setRoomInfo] = useState({
     room: null,
     eventId: null,
@@ -21,11 +24,13 @@ export function ClientContent() {
       roomInfo.roomTimeline?.removeInternalListeners();
       const r = mx.getRoom(rId);
       if (r) {
+        setWelcomeMsg(null);
         setRoomInfo({
           room: r,
           eventId: eId ?? null,
         });
       } else {
+        setWelcomeMsg(getUrlPrams('welcomeMsg'));
         setRoomInfo({
           room: null,
           eventId: null,
@@ -42,7 +47,7 @@ export function ClientContent() {
   const { room, eventId } = roomInfo;
   if (!room) {
     setTimeout(() => openNavigation());
-    return <Welcome />;
+    return <Welcome mssg={welcomeMsg} />;
   }
 
   return <RoomBaseView room={room} eventId={eventId} />;
