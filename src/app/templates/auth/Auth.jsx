@@ -691,6 +691,7 @@ LoadingScreen.propTypes = {
 };
 
 function Auth() {
+  const [welcomeMsg, setWelcomeMsg] = useState(getUrlPrams('welcomeMsg'));
   const [jwtBaseUrl, setJwtBaseUrl] = useState(getUrlPrams('jwtBaseUrl'));
   const [loginToken, setLoginToken] = useState(getUrlPrams('loginToken'));
 
@@ -714,7 +715,7 @@ function Auth() {
         // Solo actualizar la UI si el componente no se ha desmontado
         if (!isCancelled) {
           const { href } = window.location;
-          window.location.replace(href.slice(0, href.indexOf('?')));
+          window.location.replace(href.slice(0, href.indexOf('&jwtBaseUrl=') || href.indexOf('?')));
         }
       } catch {
         if (!isCancelled) {
@@ -730,7 +731,7 @@ function Auth() {
     return () => {
       isCancelled = true;
     };
-  }, [loginToken, jwtBaseUrl]);
+  }, [loginToken, jwtBaseUrl, welcomeMsg]);
 
   return (
     <ScrollView invisible>
