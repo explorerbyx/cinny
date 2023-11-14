@@ -32,30 +32,54 @@ function Welcome({ mssg }) {
           ''
         )}
         {/* <Text className="app-welcome__subheading" variant="s1">Yet another matrix client</Text> */}
+        {mssg === 'hub' ? (
+          <div className="app-welcome-msg">
+            <p>
+              Explorer Hub es la comunidad de aprendizaje en la que Coordinadores, Expertos y Alumni
+              Explorer se conectan con el objetivo de mejorar la experiencia de los Explorers en su
+              paso por el programa.
+            </p>
+            <p>
+              O Explorer Hub é a comunidade de aprendizado onde os Coordenadores, Especialistas e
+              Ex-Alunos do Explorer se conectam com o objetivo de melhorar a experiência dos
+              Exploradores durante o período em que estão no programa.
+            </p>
+            <p>
+              Explorer Hub is the learning community where Coordinators, Experts and Explorer Alumni
+              connect with the aim of improving the experience of Explorers during their time on the
+              programme.
+            </p>
+          </div>
+        ) : (
+          ''
+        )}
         {mssg === 'r2e' ? (
           <div className="app-welcome-msg">
             <br />
-            <p>¡Te damos la bienvenida al Chat de Road to Explorer! ¿Cómo se utiliza?</p>
+            <p>
+              &iexcl;Te damos la bienvenida al Chat de Road to Explorer! &iquest;C&oacute;mo se
+              utiliza?
+            </p>
             <p>
               Localiza las salas del Chat: las tienes a la izquierda,en tu espacio de trabajo. Entra
-              en la sala que más te interese (hay tres: Bienvenida, General y Conecta) para que
-              empiece la magia del networking.
+              en la sala que m&aacute;s te interese (hay tres: Bienvenida, General y Conecta) para
+              que empiece la magia del networking.
             </p>
             <ul>
               <li>
                 Utiliza la sala Bienvenida para presentarte y para subir el PDF con tus datos que
-                rellenarás en la sección “Bienvenida”.
+                rellenar&aacute;s en la secci&oacute;n &ldquo;Bienvenida&rdquo;.
               </li>
               <br />
               <li>
-                Utiliza la sala General para las videollamadas en las que resolverás tus dudas.
-                Recuerda que, además de las programadas, puedes utilizar esta sala siempre que
-                quieras para reunirte con las personas con las que hayas hecho contacto.
+                Utiliza la sala General para comentar dudas, organizar videollamadas (aqu&iacute;
+                podr&eacute;is establecer una fecha y hora, por ejemplo) o, simplemente, para
+                charlar con tus compa&ntilde;eros.
               </li>
               <br />
               <li>
                 Utiliza la sala Conecta para, al final del programa y una vez localizados los
-                proyectos que más se ajustan al tuyo, encontrar un grupo de personas afines o
+                proyectos que m&aacute;s se ajustan al tuyo, encontrar un grupo de personas afines o
                 complementarias a tu idea y con las que puedas formar un equipo.
               </li>
             </ul>
