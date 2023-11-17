@@ -19,14 +19,14 @@ function Welcome({ mssg }) {
         {/* <Text className="app-welcome__heading" variant="h1" weight="medium" primary>Welcome to Cinny</Text> */}
         {mssg === null ? (
           <Text className="app-welcome__heading" variant="h2" weight="light" primary>
-            Bienvenid@m, Bem-vindo, Welcome!
+            ¡Bienvenid@! Bem-vindo(a)! Welcome!
           </Text>
         ) : (
           ''
         )}
         {mssg === 'hub' ? (
           <Text className="app-welcome__heading" variant="h2" weight="light" primary>
-            Bienvenid@/Bem-vindo al/ao Hub!
+            ¡Bienvenid@! Bem-vindo(a)! Welcome!
           </Text>
         ) : (
           ''
@@ -40,9 +40,9 @@ function Welcome({ mssg }) {
               paso por el programa.
             </p>
             <p>
-              O Explorer Hub é a comunidade de aprendizado onde os Coordenadores, Especialistas e
-              Ex-Alunos do Explorer se conectam com o objetivo de melhorar a experiência dos
-              Exploradores durante o período em que estão no programa.
+              Explorer Hub é a comunidade de aprendizagem onde Coordenadores, Expertos e Ex-Alunos
+              do Explorer se conectam com o objetivo de melhorar a experiência dos Explorers durante
+              o período em que estão no programa.
             </p>
             <p>
               Explorer Hub is the learning community where Coordinators, Experts and Explorer Alumni

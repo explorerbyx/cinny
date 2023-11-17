@@ -29,7 +29,7 @@ export interface Settings {
 
 const defaultSettings: Settings = {
   themeIndex: 0,
-  useSystemTheme: true,
+  useSystemTheme: false,
   isMarkdown: true,
   editorToolbar: false,
   twitterEmoji: false,
@@ -39,7 +39,7 @@ const defaultSettings: Settings = {
   enterForNewline: false,
   messageLayout: 0,
   messageSpacing: '400',
-  hideMembershipEvents: false,
+  hideMembershipEvents: true,
   hideNickAvatarEvents: true,
   mediaAutoLoad: true,
   urlPreview: true,
