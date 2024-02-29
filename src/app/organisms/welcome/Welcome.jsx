@@ -32,6 +32,28 @@ function Welcome({ mssg }) {
           ''
         )}
         {/* <Text className="app-welcome__subheading" variant="s1">Yet another matrix client</Text> */}
+        {mssg === 'community' ? (
+          <div className="app-welcome-msg">
+            <p>
+              La comunidad alumni de Santander X Explorer cuenta con un nuevo espacio en la que los
+              participantes graduados del programa se conectan con el objetivo de hacer networking y
+              mejorar el mundo a través del emprendimiento.
+            </p>
+            <p>
+              A comunidade de ex-alunos do Santander X Explorer tem um novo espaço onde os graduados
+              do programa se conectam com o objetivo de fazer networking e melhorar o mundo por meio
+              do empreendedorismo.
+            </p>
+            <p>
+              The Santander X Explorer alumni community has a new space where graduates of the
+              programme connect with the aim of networking and improving the world through
+              entrepreneurship.
+            </p>
+          </div>
+        ) : (
+          ''
+        )}
+        {/* <Text className="app-welcome__subheading" variant="s1">Yet another matrix client</Text> */}
         {mssg === 'hub' ? (
           <div className="app-welcome-msg">
             <p>
